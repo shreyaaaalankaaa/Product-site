@@ -1,0 +1,346 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Premium Wireless Headphones",
+            "description": "High-quality wireless headphones with active noise cancellation and premium sound quality. Perfect for music lovers and professionals.",
+            "price": 299.99,
+            "rating": 4.8,
+            "category": "Electronics",
+            "featured": true,
+            "badge": "Best Seller",
+            "image": null,
+            "features": [
+                "Active Noise Cancellation",
+                "30-hour battery life",
+                "Bluetooth 5.0 connectivity",
+                "Premium leather ear cups",
+                "Quick charge technology",
+                "Built-in microphone for calls"
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Smart Fitness Watch",
+            "description": "Advanced fitness tracking smartwatch with heart rate monitoring, GPS, and smartphone integration for the active lifestyle.",
+            "price": 249.99,
+            "rating": 4.6,
+            "category": "Electronics",
+            "featured": true,
+            "badge": "New",
+            "image": null,
+            "features": [
+                "Heart rate monitoring",
+                "Built-in GPS tracking",
+                "Water resistant up to 50m",
+                "Sleep tracking",
+                "Multiple sports modes",
+                "7-day battery life"
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Ergonomic Office Chair",
+            "description": "Professional ergonomic office chair designed for long hours of comfortable work. Features lumbar support and adjustable height.",
+            "price": 399.99,
+            "rating": 4.7,
+            "category": "Furniture",
+            "featured": true,
+            "badge": null,
+            "image": null,
+            "features": [
+                "Lumbar support system",
+                "Adjustable height mechanism",
+                "Breathable mesh backrest",
+                "360-degree swivel",
+                "High-quality casters",
+                "Weight capacity: 300 lbs"
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Organic Cotton T-Shirt",
+            "description": "Comfortable and sustainable organic cotton t-shirt available in multiple colors. Perfect for casual wear and everyday comfort.",
+            "price": 29.99,
+            "rating": 4.4,
+            "category": "Fashion",
+            "featured": false,
+            "badge": "Eco-Friendly",
+            "image": null,
+            "features": [
+                "100% organic cotton",
+                "Pre-shrunk fabric",
+                "Available in 8 colors",
+                "Unisex sizing",
+                "Machine washable",
+                "Ethically sourced"
+            ]
+        },
+        {
+            "id": 5,
+            "name": "Professional Camera Lens",
+            "description": "High-performance 85mm portrait lens with superior optical quality. Ideal for professional photography and creative projects.",
+            "price": 899.99,
+            "rating": 4.9,
+            "category": "Photography",
+            "featured": false,
+            "badge": "Pro",
+            "image": null,
+            "features": [
+                "85mm focal length",
+                "f/1.4 maximum aperture",
+                "Superior optical performance",
+                "Weather-sealed construction",
+                "Silent autofocus motor",
+                "Professional build quality"
+            ]
+        },
+        {
+            "id": 6,
+            "name": "Stainless Steel Water Bottle",
+            "description": "Durable stainless steel water bottle that keeps drinks cold for 24 hours and hot for 12 hours. Perfect for outdoor activities.",
+            "price": 34.99,
+            "rating": 4.5,
+            "category": "Sports",
+            "featured": false,
+            "badge": null,
+            "image": null,
+            "features": [
+                "Double-wall vacuum insulation",
+                "BPA-free materials",
+                "Leak-proof design",
+                "Wide mouth opening",
+                "Dishwasher safe",
+                "Available in 6 colors"
+            ]
+        },
+        {
+            "id": 7,
+            "name": "Wireless Charging Pad",
+            "description": "Fast wireless charging pad compatible with all Qi-enabled devices. Sleek design with LED indicator for charging status.",
+            "price": 49.99,
+            "rating": 4.3,
+            "category": "Electronics",
+            "featured": false,
+            "badge": null,
+            "image": null,
+            "features": [
+                "Fast charging up to 15W",
+                "Qi-compatible",
+                "LED charging indicator",
+                "Non-slip surface",
+                "Overheating protection",
+                "Compact design"
+            ]
+        },
+        {
+            "id": 8,
+            "name": "Luxury Skincare Set",
+            "description": "Complete luxury skincare routine set with cleanser, toner, serum, and moisturizer. Suitable for all skin types.",
+            "price": 189.99,
+            "rating": 4.6,
+            "category": "Beauty",
+            "featured": false,
+            "badge": "Luxury",
+            "image": null,
+            "features": [
+                "4-step skincare routine",
+                "Natural ingredients",
+                "Suitable for all skin types",
+                "Dermatologist tested",
+                "Cruelty-free",
+                "Premium packaging"
+            ]
+        },
+        {
+            "id": 9,
+            "name": "Smart Home Security Camera",
+            "description": "Advanced security camera with 1080p HD recording, night vision, and smartphone app integration for complete home monitoring.",
+            "price": 159.99,
+            "rating": 4.4,
+            "category": "Home Security",
+            "featured": false,
+            "badge": "Smart",
+            "image": null,
+            "features": [
+                "1080p HD recording",
+                "Night vision capability",
+                "Two-way audio",
+                "Motion detection alerts",
+                "Cloud storage option",
+                "Easy installation"
+            ]
+        },
+        {
+            "id": 10,
+            "name": "Bluetooth Gaming Controller",
+            "description": "Professional gaming controller with precise controls, customizable buttons, and long battery life. Compatible with multiple platforms.",
+            "price": 79.99,
+            "rating": 4.7,
+            "category": "Gaming",
+            "featured": false,
+            "badge": null,
+            "image": null,
+            "features": [
+                "Precision analog sticks",
+                "Customizable buttons",
+                "40-hour battery life",
+                "Multi-platform compatibility",
+                "Ergonomic design",
+                "Low-latency connection"
+            ]
+        },
+        {
+            "id": 11,
+            "name": "Portable Coffee Maker",
+            "description": "Compact portable coffee maker perfect for travel, camping, or office use. Brews perfect coffee anywhere with manual operation.",
+            "price": 89.99,
+            "rating": 4.2,
+            "category": "Kitchen",
+            "featured": false,
+            "badge": "Portable",
+            "image": null,
+            "features": [
+                "Manual operation",
+                "Compact design",
+                "BPA-free materials",
+                "Easy to clean",
+                "Perfect for travel",
+                "No electricity required"
+            ]
+        },
+        {
+            "id": 12,
+            "name": "LED Desk Lamp",
+            "description": "Modern LED desk lamp with adjustable brightness, color temperature control, and USB charging port for convenient workspace lighting.",
+            "price": 69.99,
+            "rating": 4.5,
+            "category": "Lighting",
+            "featured": false,
+            "badge": null,
+            "image": null,
+            "features": [
+                "Adjustable brightness",
+                "Color temperature control",
+                "USB charging port",
+                "Touch controls",
+                "Energy efficient",
+                "Modern design"
+            ]
+        },
+        {
+            "id": 13,
+            "name": "Yoga Mat Premium",
+            "description": "High-quality yoga mat with superior grip and cushioning. Made from eco-friendly materials for comfortable and safe practice.",
+            "price": 59.99,
+            "rating": 4.8,
+            "category": "Sports",
+            "featured": false,
+            "badge": "Eco",
+            "image": null,
+            "features": [
+                "Superior grip surface",
+                "6mm thick cushioning",
+                "Eco-friendly materials",
+                "Non-slip bottom",
+                "Easy to clean",
+                "Carrying strap included"
+            ]
+        },
+        {
+            "id": 14,
+            "name": "Wireless Mouse",
+            "description": "Precision wireless mouse with ergonomic design, long battery life, and silent clicking. Perfect for work and gaming.",
+            "price": 39.99,
+            "rating": 4.3,
+            "category": "Electronics",
+            "featured": false,
+            "badge": null,
+            "image": null,
+            "features": [
+                "Ergonomic design",
+                "Silent clicking",
+                "18-month battery life",
+                "2.4GHz wireless connection",
+                "DPI adjustment",
+                "Plug and play"
+            ]
+        },
+        {
+            "id": 15,
+            "name": "Ceramic Cookware Set",
+            "description": "Professional ceramic cookware set with non-stick surface and even heat distribution. Includes pots, pans, and lids.",
+            "price": 199.99,
+            "rating": 4.6,
+            "category": "Kitchen",
+            "featured": false,
+            "badge": null,
+            "image": null,
+            "features": [
+                "Non-stick ceramic coating",
+                "Even heat distribution",
+                "Dishwasher safe",
+                "Oven safe up to 450°F",
+                "PFOA-free",
+                "5-piece set"
+            ]
+        },
+        {
+            "id": 16,
+            "name": "Designer Sunglasses",
+            "description": "Stylish designer sunglasses with UV protection and polarized lenses. Classic design that complements any outfit.",
+            "price": 149.99,
+            "rating": 4.4,
+            "category": "Fashion",
+            "featured": false,
+            "badge": "Designer",
+            "image": null,
+            "features": [
+                "UV400 protection",
+                "Polarized lenses",
+                "Lightweight frame",
+                "Scratch resistant",
+                "Classic design",
+                "Includes case"
+            ]
+        },
+        {
+            "id": 17,
+            "name": "Plant-Based Protein Powder",
+            "description": "High-quality plant-based protein powder with complete amino acid profile. Perfect for post-workout recovery and nutrition.",
+            "price": 44.99,
+            "rating": 4.5,
+            "category": "Health",
+            "featured": false,
+            "badge": "Natural",
+            "image": null,
+            "features": [
+                "Plant-based protein",
+                "Complete amino acids",
+                "No artificial flavors",
+                "Gluten-free",
+                "Easy mixing",
+                "30 servings per container"
+            ]
+        },
+        {
+            "id": 18,
+            "name": "Smart Thermostat",
+            "description": "Energy-efficient smart thermostat with app control, scheduling, and learning capabilities. Helps reduce energy costs.",
+            "price": 179.99,
+            "rating": 4.7,
+            "category": "Smart Home",
+            "featured": false,
+            "badge": "Energy Saver",
+            "image": null,
+            "features": [
+                "App control",
+                "Learning algorithm",
+                "Energy usage reports",
+                "Voice control compatible",
+                "Easy installation",
+                "Programmable schedules"
+            ]
+        }
+    ]
+}
