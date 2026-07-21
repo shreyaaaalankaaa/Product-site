@@ -5,7 +5,7 @@ class ShopHubApp {
     this.searchQuery = '';
     this.selectedCategory = 'All';
     this.sortMode = 'featured';
-    this.toastTimer = null;
+    this.showWishlistOnly = false;
     this.init();
   }
 
@@ -16,11 +16,12 @@ class ShopHubApp {
       const data = await response.json();
       if (!Array.isArray(data.products)) throw new Error('Invalid product data.');
       this.products = data.products;
-      this.filteredProducts = [...this.products];
       window.cartManager.setProducts(this.products);
+      this.restoreStateFromUrl();
       this.renderCategoryChips();
       this.bindEvents();
-      this.applyFilters();
+      this.syncControls();
+      this.applyFilters(false);
       this.renderFeatured();
       document.getElementById('current-year').textContent = new Date().getFullYear();
     } catch (error) {
@@ -48,6 +49,12 @@ class ShopHubApp {
 
     document.querySelector('.clear-filters')?.addEventListener('click', () => this.clearFilters());
     document.getElementById('empty-clear')?.addEventListener('click', () => this.clearFilters());
+    document.getElementById('wishlist-toggle')?.addEventListener('click', () => {
+      this.showWishlistOnly = !this.showWishlistOnly;
+      this.syncWishlistToggle();
+      this.applyFilters();
+      document.getElementById('shop')?.scrollIntoView({ behavior: 'smooth' });
+    });
 
     document.getElementById('category-chips')?.addEventListener('click', event => {
       const button = event.target.closest('button[data-category]');
@@ -57,32 +64,73 @@ class ShopHubApp {
       this.applyFilters();
     });
 
+    document.addEventListener('wishlist:changed', () => {
+      this.renderFeatured();
+      this.applyFilters(false);
+      window.productModal?.updateWishlistButton?.();
+    });
+
     document.addEventListener('click', event => {
       const actionButton = event.target.closest('button[data-action][data-product-id]');
       if (actionButton) {
         const product = this.products.find(item => item.id === Number(actionButton.dataset.productId));
         if (!product) return;
-        if (actionButton.dataset.action === 'view') window.productModal.open(product);
-        if (actionButton.dataset.action === 'add') window.cartManager.add(product.id);
+        const action = actionButton.dataset.action;
+        if (action === 'view') window.productModal.open(product);
+        if (action === 'add') window.cartManager.add(product.id);
+        if (action === 'wishlist') window.wishlistManager.toggle(product.id, product.name);
       }
 
       const footerFilter = event.target.closest('.footer-filter[data-category]');
       if (footerFilter) {
         this.selectedCategory = footerFilter.dataset.category;
-        this.syncActiveChip();
+        this.showWishlistOnly = false;
+        this.syncControls();
         this.applyFilters();
         document.getElementById('shop')?.scrollIntoView({ behavior: 'smooth' });
       }
     });
+
+    window.addEventListener('popstate', () => {
+      this.restoreStateFromUrl();
+      this.syncControls();
+      this.applyFilters(false);
+    });
+  }
+
+  restoreStateFromUrl() {
+    const params = new URLSearchParams(location.search);
+    this.searchQuery = (params.get('q') || '').toLowerCase();
+    this.selectedCategory = params.get('category') || 'All';
+    this.sortMode = params.get('sort') || 'featured';
+    this.showWishlistOnly = params.get('saved') === '1';
+  }
+
+  updateUrl() {
+    const params = new URLSearchParams();
+    if (this.searchQuery) params.set('q', this.searchQuery);
+    if (this.selectedCategory !== 'All') params.set('category', this.selectedCategory);
+    if (this.sortMode !== 'featured') params.set('sort', this.sortMode);
+    if (this.showWishlistOnly) params.set('saved', '1');
+    const query = params.toString();
+    history.replaceState(null, '', `${location.pathname}${query ? `?${query}` : ''}${location.hash}`);
   }
 
   renderCategoryChips() {
     const categories = ['All', ...new Set(this.products.map(product => product.category))];
-    const container = document.getElementById('category-chips');
-    container.innerHTML = categories.map(category => `
-      <button class="category-chip${category === 'All' ? ' active' : ''}" type="button" data-category="${window.productRenderer.escapeHtml(category)}" aria-pressed="${category === 'All'}">
+    document.getElementById('category-chips').innerHTML = categories.map(category => `
+      <button class="category-chip" type="button" data-category="${window.productRenderer.escapeHtml(category)}" aria-pressed="false">
         ${window.productRenderer.escapeHtml(category)}
       </button>`).join('');
+  }
+
+  syncControls() {
+    const search = document.getElementById('search-input');
+    const sort = document.getElementById('sort-select');
+    if (search) search.value = this.searchQuery;
+    if (sort && [...sort.options].some(option => option.value === this.sortMode)) sort.value = this.sortMode;
+    this.syncActiveChip();
+    this.syncWishlistToggle();
   }
 
   syncActiveChip() {
@@ -93,25 +141,29 @@ class ShopHubApp {
     });
   }
 
+  syncWishlistToggle() {
+    const button = document.getElementById('wishlist-toggle');
+    button?.classList.toggle('active', this.showWishlistOnly);
+    button?.setAttribute('aria-pressed', String(this.showWishlistOnly));
+    button?.setAttribute('aria-label', this.showWishlistOnly ? 'Show all products' : 'Show saved products');
+  }
+
   clearFilters() {
     this.searchQuery = '';
     this.selectedCategory = 'All';
     this.sortMode = 'featured';
-    const search = document.getElementById('search-input');
-    if (search) search.value = '';
-    const sort = document.getElementById('sort-select');
-    if (sort) sort.value = 'featured';
-    this.syncActiveChip();
+    this.showWishlistOnly = false;
+    this.syncControls();
     this.applyFilters();
-    search?.focus();
+    document.getElementById('search-input')?.focus();
   }
 
-  applyFilters() {
+  applyFilters(updateUrl = true) {
     let products = this.products.filter(product => {
-      const haystack = `${product.name} ${product.description} ${product.category}`.toLowerCase();
-      const matchesSearch = !this.searchQuery || haystack.includes(this.searchQuery);
-      const matchesCategory = this.selectedCategory === 'All' || product.category === this.selectedCategory;
-      return matchesSearch && matchesCategory;
+      const haystack = `${product.name} ${product.description} ${product.category} ${(product.features || []).join(' ')}`.toLowerCase();
+      return (!this.searchQuery || haystack.includes(this.searchQuery))
+        && (this.selectedCategory === 'All' || product.category === this.selectedCategory)
+        && (!this.showWishlistOnly || window.wishlistManager.has(product.id));
     });
 
     products = [...products].sort((a, b) => {
@@ -124,6 +176,7 @@ class ShopHubApp {
 
     this.filteredProducts = products;
     this.renderProducts();
+    if (updateUrl) this.updateUrl();
   }
 
   renderFeatured() {
@@ -136,15 +189,24 @@ class ShopHubApp {
     const empty = document.getElementById('empty-state');
     const count = document.getElementById('products-count');
     const total = this.filteredProducts.length;
-    count.textContent = `${total} ${total === 1 ? 'product' : 'products'} shown`;
+    count.textContent = this.showWishlistOnly
+      ? `${total} saved ${total === 1 ? 'product' : 'products'}`
+      : `${total} ${total === 1 ? 'product' : 'products'} shown`;
     grid.innerHTML = this.filteredProducts.map(product => window.productRenderer.createProductCard(product)).join('');
     grid.hidden = total === 0;
     empty.hidden = total !== 0;
+    if (total === 0 && this.showWishlistOnly) {
+      empty.querySelector('h3').textContent = 'No saved products yet';
+      empty.querySelector('p').textContent = 'Use the heart button on any product to save it here.';
+    } else {
+      empty.querySelector('h3').textContent = 'No matching products';
+      empty.querySelector('p').textContent = 'Try a different search term or clear the category filter.';
+    }
   }
 
   showLoadError() {
     const grid = document.getElementById('products-grid');
-    if (grid) grid.innerHTML = '<p>Products could not be loaded. Start the included local server instead of opening index.html directly.</p>';
+    if (grid) grid.innerHTML = '<div class="load-error"><strong>Products could not be loaded.</strong><span>Run the included local server instead of opening index.html directly.</span></div>';
   }
 }
 
@@ -157,6 +219,4 @@ window.showToast = function showToast(message) {
   window.__shopHubToastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-  window.shopHubApp = new ShopHubApp();
-});
+document.addEventListener('DOMContentLoaded', () => { window.shopHubApp = new ShopHubApp(); });

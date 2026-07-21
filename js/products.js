@@ -24,11 +24,15 @@ class ProductRenderer {
     const category = this.escapeHtml(product.category);
     const badge = product.badge ? `<span class="product-badge">${this.escapeHtml(product.badge)}</span>` : '';
     const image = this.escapeHtml(product.image || 'assets/product-placeholder.svg');
+    const saved = window.wishlistManager?.has(product.id) ?? false;
 
     return `
       <article class="product-card" data-product-id="${product.id}">
         <div class="product-media">
           ${badge}
+          <button class="wishlist-button${saved ? ' active' : ''}" type="button" data-action="wishlist" data-product-id="${product.id}" aria-label="${saved ? 'Remove' : 'Save'} ${name} ${saved ? 'from' : 'to'} wishlist" aria-pressed="${saved}">
+            <svg aria-hidden="true"><use href="assets/icons.svg#heart"></use></svg>
+          </button>
           <img src="${image}" alt="${name}" loading="lazy" onerror="this.onerror=null;this.src='assets/product-placeholder.svg'">
           <button class="quick-view" type="button" data-action="view" data-product-id="${product.id}" aria-label="View details for ${name}">Quick view</button>
         </div>

@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="ShopHub is a responsive product showcase built with HTML, CSS, and JavaScript, featuring search, filters, product details, and a persistent shopping cart.">
   <meta name="theme-color" content="#f8fafc">
+  <meta name="application-name" content="ShopHub">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="manifest.webmanifest">
   <title>ShopHub | Curated everyday essentials</title>
   <link rel="preconnect" href="https://images.unsplash.com">
   <link rel="stylesheet" href="css/styles.css">
@@ -32,6 +35,10 @@
       <div class="header-actions">
         <button class="icon-button theme-toggle" type="button" aria-label="Enable dark mode" title="Enable dark mode">
           <svg class="theme-icon" aria-hidden="true"><use href="assets/icons.svg#moon"></use></svg>
+        </button>
+        <button class="icon-button wishlist-toggle" id="wishlist-toggle" type="button" aria-label="Show saved products" title="Show saved products">
+          <svg aria-hidden="true"><use href="assets/icons.svg#heart"></use></svg>
+          <span class="wishlist-count" id="wishlist-count" aria-live="polite">0</span>
         </button>
         <button class="cart-button" id="open-cart" type="button" aria-label="Open shopping cart">
           <svg aria-hidden="true"><use href="assets/icons.svg#shopping-cart"></use></svg>
@@ -168,10 +175,16 @@
           <p class="modal-price" id="modal-price"></p>
           <p class="modal-description" id="modal-description"></p>
           <div class="modal-features" id="modal-features"></div>
-          <button class="button button-primary modal-add" id="modal-add-to-cart" type="button">
-            <svg aria-hidden="true"><use href="assets/icons.svg#shopping-cart"></use></svg>
-            Add to cart
-          </button>
+          <div class="modal-actions">
+            <button class="button button-secondary" id="modal-wishlist" type="button">
+              <svg aria-hidden="true"><use href="assets/icons.svg#heart"></use></svg>
+              Save product
+            </button>
+            <button class="button button-primary modal-add" id="modal-add-to-cart" type="button">
+              <svg aria-hidden="true"><use href="assets/icons.svg#shopping-cart"></use></svg>
+              Add to cart
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -235,8 +248,14 @@
 
   <script src="js/theme.js"></script>
   <script src="js/products.js"></script>
+  <script src="js/wishlist.js"></script>
   <script src="js/cart.js"></script>
   <script src="js/modal.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(() => {}));
+    }
+  </script>
 </body>
 </html>
