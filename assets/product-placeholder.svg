@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 620" role="img" aria-label="Product image placeholder">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ccfbf1"/>
+      <stop offset="1" stop-color="#dbeafe"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="620" fill="url(#g)"/>
+  <circle cx="400" cy="270" r="125" fill="#fff" opacity=".75"/>
+  <path d="M315 290h170l-18 95H333l-18-95Zm25-42h18l18 42m84-42h-18l-18 42" fill="none" stroke="#0f766e" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="400" y="460" text-anchor="middle" font-family="Arial, sans-serif" font-size="38" font-weight="700" fill="#0f172a">ShopHub</text>
+</svg>

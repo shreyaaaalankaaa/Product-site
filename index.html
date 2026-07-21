@@ -1,242 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Modern e-commerce product showcase with the latest products, advanced search, and filtering capabilities">
-    <meta name="keywords" content="e-commerce, products, shopping, online store, electronics, fashion">
-    <title>ShopHub - Premium Product Showcase</title>
-    
-    <!-- Preload critical resources -->
-    <link rel="preload" href="css/styles.css" as="style">
-    <link rel="preload" href="data/products.json" as="fetch" crossorigin>
-    
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/themes.css">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="assets/icons.svg#cart">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ShopHub is a responsive product showcase built with HTML, CSS, and JavaScript, featuring search, filters, product details, and a persistent shopping cart.">
+  <meta name="theme-color" content="#f8fafc">
+  <title>ShopHub | Curated everyday essentials</title>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 </head>
 <body>
-    <!-- Skip to main content for accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    
-    <!-- Header -->
-    <header class="header" role="banner">
-        <nav class="nav" role="navigation" aria-label="Main navigation">
-            <div class="nav-container">
-                <div class="logo">
-                    <svg class="logo-icon" aria-hidden="true">
-                        <use href="assets/icons.svg#cart"></use>
-                    </svg>
-                    <span class="logo-text">ShopHub</span>
-                </div>
-                
-                <div class="nav-actions">
-                    <button type="button" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme">
-                        <svg class="theme-icon" aria-hidden="true">
-                            <use href="assets/icons.svg#sun"></use>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </nav>
-    </header>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
-    <!-- Main Content -->
-    <main id="main-content" role="main">
-        <!-- Hero Section -->
-        <section class="hero" aria-labelledby="hero-title">
-            <div class="hero-container">
-                <div class="hero-content">
-                    <h1 id="hero-title" class="hero-title">
-                        Discover Premium Products
-                        <span class="hero-subtitle">Curated collection of quality items for modern lifestyle</span>
-                    </h1>
-                    <p class="hero-description">
-                        Explore our handpicked selection of electronics, fashion, and lifestyle products 
-                        designed to enhance your everyday experience.
-                    </p>
-                    <button type="button" class="hero-cta" onclick="document.getElementById('products-section').scrollIntoView({behavior: 'smooth'})">
-                        Shop Now
-                        <svg class="cta-icon" aria-hidden="true">
-                            <use href="assets/icons.svg#arrow-right"></use>
-                        </svg>
-                    </button>
-                </div>
-                <div class="hero-visual">
-                    <div class="hero-graphic">
-                        <svg viewBox="0 0 400 300" class="hero-svg">
-                            <defs>
-                                <linearGradient id="heroGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:var(--primary-color);stop-opacity:0.8" />
-                                    <stop offset="100%" style="stop-color:var(--secondary-color);stop-opacity:0.6" />
-                                </linearGradient>
-                            </defs>
-                            <rect x="50" y="50" width="120" height="80" rx="8" fill="url(#heroGradient)"/>
-                            <rect x="200" y="80" width="120" height="80" rx="8" fill="var(--accent-color)" opacity="0.7"/>
-                            <circle cx="150" cy="200" r="40" fill="var(--primary-color)" opacity="0.5"/>
-                            <circle cx="280" cy="180" r="30" fill="var(--secondary-color)" opacity="0.6"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-        </section>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="ShopHub home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg><use href="assets/icons.svg#shopping-cart"></use></svg>
+        </span>
+        <span>ShopHub</span>
+      </a>
 
-        <!-- Search and Filter Section -->
-        <section class="search-section" aria-labelledby="search-title">
-            <div class="container">
-                <h2 id="search-title" class="section-title">Find Your Perfect Product</h2>
-                <div class="search-controls">
-                    <div class="search-box">
-                        <label for="search-input" class="sr-only">Search products</label>
-                        <input 
-                            type="search" 
-                            id="search-input" 
-                            class="search-input" 
-                            placeholder="Search products..." 
-                            autocomplete="off"
-                            aria-describedby="search-help"
-                        >
-                        <svg class="search-icon" aria-hidden="true">
-                            <use href="assets/icons.svg#search"></use>
-                        </svg>
-                        <div id="search-help" class="sr-only">Enter product name or description to search</div>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label for="category-filter" class="filter-label">Category</label>
-                        <select id="category-filter" class="category-filter">
-                            <option value="">All Categories</option>
-                        </select>
-                    </div>
-                    
-                    <button type="button" class="clear-filters" aria-label="Clear all filters">
-                        <svg class="clear-icon" aria-hidden="true">
-                            <use href="assets/icons.svg#x"></use>
-                        </svg>
-                        Clear
-                    </button>
-                </div>
-            </div>
-        </section>
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        <a href="#featured">Featured</a>
+        <a href="#shop">Shop</a>
+        <a href="#about">About</a>
+      </nav>
 
-        <!-- Featured Products Section -->
-        <section class="featured-section" aria-labelledby="featured-title">
-            <div class="container">
-                <h2 id="featured-title" class="section-title">Featured Products</h2>
-                <div class="featured-grid" id="featured-products" role="region" aria-live="polite">
-                    <!-- Featured products will be loaded here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Products Section -->
-        <section id="products-section" class="products-section" aria-labelledby="products-title">
-            <div class="container">
-                <h2 id="products-title" class="section-title">All Products</h2>
-                <div class="products-status" id="products-status" role="status" aria-live="polite">
-                    <span class="products-count" id="products-count"></span>
-                </div>
-                <div class="products-grid" id="products-grid" role="region" aria-live="polite">
-                    <!-- Products will be loaded here -->
-                </div>
-                <div class="empty-state" id="empty-state" style="display: none;">
-                    <svg class="empty-icon" aria-hidden="true">
-                        <use href="assets/icons.svg#search"></use>
-                    </svg>
-                    <h3 class="empty-title">No products found</h3>
-                    <p class="empty-description">Try adjusting your search or filter criteria</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Product Modal -->
-    <div class="modal-overlay" id="product-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" style="display: none;">
-        <div class="modal-container">
-            <div class="modal-header">
-                <h2 id="modal-title" class="modal-title"></h2>
-                <button type="button" class="modal-close" aria-label="Close modal">
-                    <svg class="close-icon" aria-hidden="true">
-                        <use href="assets/icons.svg#x"></use>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-content">
-                <div class="modal-image">
-                    <div class="product-image-placeholder" id="modal-image">
-                        <!-- Product image placeholder -->
-                    </div>
-                </div>
-                <div class="modal-details">
-                    <div class="modal-price" id="modal-price"></div>
-                    <div class="modal-rating" id="modal-rating"></div>
-                    <div class="modal-description" id="modal-description"></div>
-                    <div class="modal-features" id="modal-features"></div>
-                    <div class="modal-actions">
-                        <button type="button" class="btn-primary" id="modal-add-to-cart">
-                            Add to Cart
-                            <svg class="btn-icon" aria-hidden="true">
-                                <use href="assets/icons.svg#shopping-cart"></use>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <div class="header-actions">
+        <button class="icon-button theme-toggle" type="button" aria-label="Enable dark mode" title="Enable dark mode">
+          <svg class="theme-icon" aria-hidden="true"><use href="assets/icons.svg#moon"></use></svg>
+        </button>
+        <button class="cart-button" id="open-cart" type="button" aria-label="Open shopping cart">
+          <svg aria-hidden="true"><use href="assets/icons.svg#shopping-cart"></use></svg>
+          <span>Cart</span>
+          <span class="cart-count" id="cart-count" aria-live="polite">0</span>
+        </button>
+      </div>
     </div>
+  </header>
 
-    <!-- Footer -->
-    <footer class="footer" role="contentinfo">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="logo">
-                        <svg class="logo-icon" aria-hidden="true">
-                            <use href="assets/icons.svg#cart"></use>
-                        </svg>
-                        <span class="logo-text">ShopHub</span>
-                    </div>
-                    <p class="footer-description">Premium product showcase for modern lifestyle</p>
-                </div>
-                <div class="footer-links">
-                    <div class="footer-section">
-                        <h3 class="footer-heading">Shop</h3>
-                        <ul class="footer-list">
-                            <li><a href="#" class="footer-link">Electronics</a></li>
-                            <li><a href="#" class="footer-link">Fashion</a></li>
-                            <li><a href="#" class="footer-link">Home & Garden</a></li>
-                            <li><a href="#" class="footer-link">Sports</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-section">
-                        <h3 class="footer-heading">Support</h3>
-                        <ul class="footer-list">
-                            <li><a href="#" class="footer-link">Contact Us</a></li>
-                            <li><a href="#" class="footer-link">FAQ</a></li>
-                            <li><a href="#" class="footer-link">Shipping</a></li>
-                            <li><a href="#" class="footer-link">Returns</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 ShopHub. All rights reserved.</p>
-            </div>
+  <main id="main-content">
+    <section class="hero" id="top">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Thoughtfully selected essentials</span>
+          <h1>Useful products.<br><span>Clear choices.</span></h1>
+          <p>Browse a focused collection of electronics, lifestyle, and home products. Search quickly, compare details, and save your cart between visits.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#shop">Explore products</a>
+            <a class="button button-secondary" href="#featured">View featured</a>
+          </div>
+          <dl class="hero-stats" aria-label="Store highlights">
+            <div><dt>18</dt><dd>Curated products</dd></div>
+            <div><dt>10</dt><dd>Categories</dd></div>
+            <div><dt>100%</dt><dd>Responsive</dd></div>
+          </dl>
         </div>
-    </footer>
 
-    <!-- Loading indicator -->
-    <div class="loading" id="loading-indicator">
-        <div class="loading-spinner" aria-label="Loading products"></div>
+        <div class="hero-showcase" aria-label="Featured product preview">
+          <article class="showcase-main">
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1200&q=85" alt="Premium wireless headphones" fetchpriority="high">
+            <div class="showcase-caption">
+              <span>Featured</span>
+              <strong>Premium Wireless Headphones</strong>
+            </div>
+          </article>
+          <article class="showcase-mini showcase-mini-one">
+            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=700&q=85" alt="Smart fitness watch">
+          </article>
+          <article class="showcase-mini showcase-mini-two">
+            <img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=700&q=85" alt="Modern desk lamp">
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="value-strip" aria-label="Shopping benefits">
+      <div class="container value-grid">
+        <div><strong>Simple discovery</strong><span>Fast search and filtering</span></div>
+        <div><strong>Clear product details</strong><span>Specifications without clutter</span></div>
+        <div><strong>Persistent cart</strong><span>Saved locally in your browser</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="featured" aria-labelledby="featured-title">
+      <div class="container">
+        <div class="section-heading-row">
+          <div>
+            <span class="eyebrow">Editor's selection</span>
+            <h2 id="featured-title">Featured products</h2>
+          </div>
+          <a class="text-link" href="#shop">See all products <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="product-grid featured-grid" id="featured-products" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="section shop-section" id="shop" aria-labelledby="shop-title">
+      <div class="container">
+        <div class="section-heading-row shop-heading">
+          <div>
+            <span class="eyebrow">Browse the collection</span>
+            <h2 id="shop-title">Find your next essential</h2>
+          </div>
+          <p class="products-count" id="products-count" aria-live="polite"></p>
+        </div>
+
+        <div class="toolbar" aria-label="Product controls">
+          <label class="search-control" for="search-input">
+            <svg aria-hidden="true"><use href="assets/icons.svg#search"></use></svg>
+            <span class="sr-only">Search products</span>
+            <input id="search-input" type="search" placeholder="Search by product or category" autocomplete="off">
+          </label>
+
+          <label class="sort-control" for="sort-select">
+            <span>Sort</span>
+            <select id="sort-select">
+              <option value="featured">Featured</option>
+              <option value="price-asc">Price: low to high</option>
+              <option value="price-desc">Price: high to low</option>
+              <option value="rating-desc">Top rated</option>
+              <option value="name-asc">Name: A–Z</option>
+            </select>
+          </label>
+
+          <button class="clear-filters" type="button">Clear filters</button>
+        </div>
+
+        <div class="category-chips" id="category-chips" aria-label="Filter by category"></div>
+
+        <div class="product-grid" id="products-grid" aria-live="polite"></div>
+
+        <div class="empty-state" id="empty-state" hidden>
+          <svg aria-hidden="true"><use href="assets/icons.svg#search"></use></svg>
+          <h3>No matching products</h3>
+          <p>Try a different search term or clear the category filter.</p>
+          <button class="button button-secondary" id="empty-clear" type="button">Clear filters</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section" id="about">
+      <div class="container about-grid">
+        <div>
+          <span class="eyebrow">About this project</span>
+          <h2>A polished vanilla JavaScript storefront</h2>
+        </div>
+        <p>ShopHub demonstrates responsive UI development, client-side data rendering, accessible modal interactions, search and sorting, theme persistence, and a local-storage cart—without a front-end framework.</p>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-overlay" id="product-modal" hidden>
+    <section class="product-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal-close icon-button" type="button" aria-label="Close product details">
+        <svg aria-hidden="true"><use href="assets/icons.svg#x"></use></svg>
+      </button>
+      <div class="modal-grid">
+        <div class="modal-image-wrap"><img id="modal-image" alt=""></div>
+        <div class="modal-content">
+          <span class="modal-category" id="modal-category"></span>
+          <h2 id="modal-title"></h2>
+          <div class="modal-rating" id="modal-rating"></div>
+          <p class="modal-price" id="modal-price"></p>
+          <p class="modal-description" id="modal-description"></p>
+          <div class="modal-features" id="modal-features"></div>
+          <button class="button button-primary modal-add" id="modal-add-to-cart" type="button">
+            <svg aria-hidden="true"><use href="assets/icons.svg#shopping-cart"></use></svg>
+            Add to cart
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="drawer-overlay" id="drawer-overlay" hidden></div>
+  <aside class="cart-drawer" id="cart-drawer" aria-labelledby="cart-title" aria-hidden="true">
+    <div class="cart-header">
+      <div><span class="eyebrow">Your selection</span><h2 id="cart-title">Shopping cart</h2></div>
+      <button class="icon-button" id="close-cart" type="button" aria-label="Close shopping cart">
+        <svg aria-hidden="true"><use href="assets/icons.svg#x"></use></svg>
+      </button>
     </div>
+    <div class="cart-items" id="cart-items"></div>
+    <div class="cart-empty" id="cart-empty">
+      <svg aria-hidden="true"><use href="assets/icons.svg#shopping-cart"></use></svg>
+      <h3>Your cart is empty</h3>
+      <p>Add a few products and they will appear here.</p>
+    </div>
+    <div class="cart-summary" id="cart-summary" hidden>
+      <div><span>Subtotal</span><strong id="cart-subtotal"></strong></div>
+      <p>Demo storefront—checkout is not connected to a payment provider.</p>
+      <button class="button button-primary" id="demo-checkout" type="button">Continue to demo checkout</button>
+      <button class="button button-quiet" id="clear-cart" type="button">Clear cart</button>
+    </div>
+  </aside>
 
-    <!-- Scripts -->
-    <script src="js/theme.js"></script>
-    <script src="js/modal.js"></script>
-    <script src="js/products.js"></script>
-    <script src="js/main.js"></script>
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand footer-brand" href="#top">
+          <span class="brand-mark" aria-hidden="true"><svg><use href="assets/icons.svg#shopping-cart"></use></svg></span>
+          <span>ShopHub</span>
+        </a>
+        <p>A responsive storefront project built by Shreya Lanka.</p>
+      </div>
+      <div>
+        <h3>Explore</h3>
+        <a href="#featured">Featured</a>
+        <a href="#shop">All products</a>
+        <a href="#about">About project</a>
+      </div>
+      <div>
+        <h3>Categories</h3>
+        <button class="footer-filter" type="button" data-category="Electronics">Electronics</button>
+        <button class="footer-filter" type="button" data-category="Fashion">Fashion</button>
+        <button class="footer-filter" type="button" data-category="Sports">Sports</button>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© <span id="current-year"></span> ShopHub</span>
+      <a href="https://github.com/shreyaaaalankaaa/Product-site" target="_blank" rel="noreferrer">View source on GitHub</a>
+    </div>
+  </footer>
+
+  <div class="loading" id="loading-indicator" aria-label="Loading products">
+    <span></span>
+  </div>
+
+  <script src="js/theme.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

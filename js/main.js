@@ -1,297 +1,162 @@
-/**
- * Main application controller
- * Handles initialization and coordination between modules
- */
 class ShopHubApp {
-    constructor() {
-        this.products = [];
-        this.filteredProducts = [];
-        this.categories = [];
-        this.searchQuery = '';
-        this.selectedCategory = '';
-        
-        this.init();
+  constructor() {
+    this.products = [];
+    this.filteredProducts = [];
+    this.searchQuery = '';
+    this.selectedCategory = 'All';
+    this.sortMode = 'featured';
+    this.toastTimer = null;
+    this.init();
+  }
+
+  async init() {
+    try {
+      const response = await fetch('data/products.json');
+      if (!response.ok) throw new Error(`Product request failed: ${response.status}`);
+      const data = await response.json();
+      if (!Array.isArray(data.products)) throw new Error('Invalid product data.');
+      this.products = data.products;
+      this.filteredProducts = [...this.products];
+      window.cartManager.setProducts(this.products);
+      this.renderCategoryChips();
+      this.bindEvents();
+      this.applyFilters();
+      this.renderFeatured();
+      document.getElementById('current-year').textContent = new Date().getFullYear();
+    } catch (error) {
+      console.error(error);
+      this.showLoadError();
+    } finally {
+      document.getElementById('loading-indicator')?.classList.add('hidden');
     }
+  }
 
-    async init() {
-        try {
-            this.showLoading();
-            await this.loadProducts();
-            this.setupEventListeners();
-            this.renderProducts();
-            this.hideLoading();
-        } catch (error) {
-            console.error('Failed to initialize app:', error);
-            this.showError('Failed to load products. Please refresh the page.');
-        }
-    }
+  bindEvents() {
+    let debounce;
+    document.getElementById('search-input')?.addEventListener('input', event => {
+      clearTimeout(debounce);
+      debounce = setTimeout(() => {
+        this.searchQuery = event.target.value.trim().toLowerCase();
+        this.applyFilters();
+      }, 220);
+    });
 
-    async loadProducts() {
-        try {
-            const response = await fetch('data/products.json');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            
-            if (!data.products || !Array.isArray(data.products)) {
-                throw new Error('Invalid product data structure');
-            }
-            
-            this.products = data.products;
-            this.filteredProducts = [...this.products];
-            this.categories = [...new Set(this.products.map(product => product.category))];
-            this.populateCategoryFilter();
-        } catch (error) {
-            console.error('Error loading products:', error);
-            throw error;
-        }
-    }
+    document.getElementById('sort-select')?.addEventListener('change', event => {
+      this.sortMode = event.target.value;
+      this.applyFilters();
+    });
 
-    setupEventListeners() {
-        // Search functionality
-        const searchInput = document.getElementById('search-input');
-        const categoryFilter = document.getElementById('category-filter');
-        const clearFiltersBtn = document.querySelector('.clear-filters');
+    document.querySelector('.clear-filters')?.addEventListener('click', () => this.clearFilters());
+    document.getElementById('empty-clear')?.addEventListener('click', () => this.clearFilters());
 
-        if (searchInput) {
-            // Debounced search
-            let searchTimeout;
-            searchInput.addEventListener('input', (e) => {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    this.searchQuery = e.target.value.trim().toLowerCase();
-                    this.filterProducts();
-                }, 300);
-            });
+    document.getElementById('category-chips')?.addEventListener('click', event => {
+      const button = event.target.closest('button[data-category]');
+      if (!button) return;
+      this.selectedCategory = button.dataset.category;
+      this.syncActiveChip();
+      this.applyFilters();
+    });
 
-            // Handle enter key
-            searchInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    this.searchQuery = e.target.value.trim().toLowerCase();
-                    this.filterProducts();
-                }
-            });
-        }
+    document.addEventListener('click', event => {
+      const actionButton = event.target.closest('button[data-action][data-product-id]');
+      if (actionButton) {
+        const product = this.products.find(item => item.id === Number(actionButton.dataset.productId));
+        if (!product) return;
+        if (actionButton.dataset.action === 'view') window.productModal.open(product);
+        if (actionButton.dataset.action === 'add') window.cartManager.add(product.id);
+      }
 
-        if (categoryFilter) {
-            categoryFilter.addEventListener('change', (e) => {
-                this.selectedCategory = e.target.value;
-                this.filterProducts();
-            });
-        }
+      const footerFilter = event.target.closest('.footer-filter[data-category]');
+      if (footerFilter) {
+        this.selectedCategory = footerFilter.dataset.category;
+        this.syncActiveChip();
+        this.applyFilters();
+        document.getElementById('shop')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
 
-        if (clearFiltersBtn) {
-            clearFiltersBtn.addEventListener('click', () => {
-                this.clearFilters();
-            });
-        }
+  renderCategoryChips() {
+    const categories = ['All', ...new Set(this.products.map(product => product.category))];
+    const container = document.getElementById('category-chips');
+    container.innerHTML = categories.map(category => `
+      <button class="category-chip${category === 'All' ? ' active' : ''}" type="button" data-category="${window.productRenderer.escapeHtml(category)}" aria-pressed="${category === 'All'}">
+        ${window.productRenderer.escapeHtml(category)}
+      </button>`).join('');
+  }
 
-        // Keyboard navigation for product cards
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && window.productModal) {
-                window.productModal.close();
-            }
-        });
-    }
+  syncActiveChip() {
+    document.querySelectorAll('.category-chip').forEach(button => {
+      const active = button.dataset.category === this.selectedCategory;
+      button.classList.toggle('active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+  }
 
-    populateCategoryFilter() {
-        const categoryFilter = document.getElementById('category-filter');
-        if (!categoryFilter) return;
+  clearFilters() {
+    this.searchQuery = '';
+    this.selectedCategory = 'All';
+    this.sortMode = 'featured';
+    const search = document.getElementById('search-input');
+    if (search) search.value = '';
+    const sort = document.getElementById('sort-select');
+    if (sort) sort.value = 'featured';
+    this.syncActiveChip();
+    this.applyFilters();
+    search?.focus();
+  }
 
-        // Clear existing options (except "All Categories")
-        const allOption = categoryFilter.querySelector('option[value=""]');
-        categoryFilter.innerHTML = '';
-        if (allOption) {
-            categoryFilter.appendChild(allOption);
-        }
+  applyFilters() {
+    let products = this.products.filter(product => {
+      const haystack = `${product.name} ${product.description} ${product.category}`.toLowerCase();
+      const matchesSearch = !this.searchQuery || haystack.includes(this.searchQuery);
+      const matchesCategory = this.selectedCategory === 'All' || product.category === this.selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
 
-        // Add category options
-        this.categories.forEach(category => {
-            const option = document.createElement('option');
-            option.value = category;
-            option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-            categoryFilter.appendChild(option);
-        });
-    }
+    products = [...products].sort((a, b) => {
+      if (this.sortMode === 'price-asc') return a.price - b.price;
+      if (this.sortMode === 'price-desc') return b.price - a.price;
+      if (this.sortMode === 'rating-desc') return b.rating - a.rating;
+      if (this.sortMode === 'name-asc') return a.name.localeCompare(b.name);
+      return Number(b.featured) - Number(a.featured) || a.id - b.id;
+    });
 
-    filterProducts() {
-        let filtered = [...this.products];
+    this.filteredProducts = products;
+    this.renderProducts();
+  }
 
-        // Apply search filter
-        if (this.searchQuery) {
-            filtered = filtered.filter(product => 
-                product.name.toLowerCase().includes(this.searchQuery) ||
-                product.description.toLowerCase().includes(this.searchQuery) ||
-                product.category.toLowerCase().includes(this.searchQuery)
-            );
-        }
+  renderFeatured() {
+    const featured = this.products.filter(product => product.featured).slice(0, 3);
+    document.getElementById('featured-products').innerHTML = featured.map(product => window.productRenderer.createProductCard(product)).join('');
+  }
 
-        // Apply category filter
-        if (this.selectedCategory) {
-            filtered = filtered.filter(product => 
-                product.category === this.selectedCategory
-            );
-        }
+  renderProducts() {
+    const grid = document.getElementById('products-grid');
+    const empty = document.getElementById('empty-state');
+    const count = document.getElementById('products-count');
+    const total = this.filteredProducts.length;
+    count.textContent = `${total} ${total === 1 ? 'product' : 'products'} shown`;
+    grid.innerHTML = this.filteredProducts.map(product => window.productRenderer.createProductCard(product)).join('');
+    grid.hidden = total === 0;
+    empty.hidden = total !== 0;
+  }
 
-        this.filteredProducts = filtered;
-        this.renderProducts();
-        this.updateProductCount();
-    }
-
-    clearFilters() {
-        const searchInput = document.getElementById('search-input');
-        const categoryFilter = document.getElementById('category-filter');
-
-        if (searchInput) searchInput.value = '';
-        if (categoryFilter) categoryFilter.value = '';
-
-        this.searchQuery = '';
-        this.selectedCategory = '';
-        this.filteredProducts = [...this.products];
-        this.renderProducts();
-        this.updateProductCount();
-
-        // Focus search input for accessibility
-        if (searchInput) searchInput.focus();
-    }
-
-    renderProducts() {
-        this.renderFeaturedProducts();
-        this.renderAllProducts();
-    }
-
-    renderFeaturedProducts() {
-        const featuredContainer = document.getElementById('featured-products');
-        if (!featuredContainer) return;
-
-        const featuredProducts = this.products.filter(product => product.featured).slice(0, 3);
-        
-        if (featuredProducts.length === 0) {
-            featuredContainer.innerHTML = '<p class="text-center">No featured products available.</p>';
-            return;
-        }
-
-        featuredContainer.innerHTML = featuredProducts.map(product => 
-            window.productRenderer.createProductCard(product, true)
-        ).join('');
-
-        // Add event listeners to featured product cards
-        this.addProductCardListeners(featuredContainer);
-    }
-
-    renderAllProducts() {
-        const productsContainer = document.getElementById('products-grid');
-        const emptyState = document.getElementById('empty-state');
-        
-        if (!productsContainer || !emptyState) return;
-
-        if (this.filteredProducts.length === 0) {
-            productsContainer.style.display = 'none';
-            emptyState.style.display = 'block';
-            return;
-        }
-
-        emptyState.style.display = 'none';
-        productsContainer.style.display = 'grid';
-        
-        productsContainer.innerHTML = this.filteredProducts.map(product => 
-            window.productRenderer.createProductCard(product, false)
-        ).join('');
-
-        // Add event listeners to product cards
-        this.addProductCardListeners(productsContainer);
-    }
-
-    addProductCardListeners(container) {
-        const productCards = container.querySelectorAll('.product-card');
-        
-        productCards.forEach(card => {
-            const productId = parseInt(card.dataset.productId);
-            const product = this.products.find(p => p.id === productId);
-            
-            if (!product) return;
-
-            // Click handler
-            card.addEventListener('click', () => {
-                if (window.productModal) {
-                    window.productModal.open(product);
-                }
-            });
-
-            // Keyboard handler
-            card.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    if (window.productModal) {
-                        window.productModal.open(product);
-                    }
-                }
-            });
-
-            // Make card focusable
-            card.setAttribute('tabindex', '0');
-            card.setAttribute('role', 'button');
-            card.setAttribute('aria-label', `View details for ${product.name}`);
-        });
-    }
-
-    updateProductCount() {
-        const productCount = document.getElementById('products-count');
-        if (!productCount) return;
-
-        const total = this.products.length;
-        const filtered = this.filteredProducts.length;
-        
-        if (this.searchQuery || this.selectedCategory) {
-            productCount.textContent = `Showing ${filtered} of ${total} products`;
-        } else {
-            productCount.textContent = `${total} products`;
-        }
-    }
-
-    showLoading() {
-        const loading = document.getElementById('loading-indicator');
-        if (loading) {
-            loading.style.display = 'flex';
-        }
-    }
-
-    hideLoading() {
-        const loading = document.getElementById('loading-indicator');
-        if (loading) {
-            loading.style.display = 'none';
-        }
-    }
-
-    showError(message) {
-        const productsContainer = document.getElementById('products-grid');
-        if (productsContainer) {
-            productsContainer.innerHTML = `
-                <div class="error-state">
-                    <svg class="error-icon" aria-hidden="true">
-                        <use href="assets/icons.svg#alert-circle"></use>
-                    </svg>
-                    <h3>Error Loading Products</h3>
-                    <p>${message}</p>
-                </div>
-            `;
-        }
-        this.hideLoading();
-    }
+  showLoadError() {
+    const grid = document.getElementById('products-grid');
+    if (grid) grid.innerHTML = '<p>Products could not be loaded. Start the included local server instead of opening index.html directly.</p>';
+  }
 }
 
-// Initialize the application when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    window.shopHubApp = new ShopHubApp();
-});
+window.showToast = function showToast(message) {
+  const toast = document.getElementById('toast');
+  if (!toast) return;
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(window.__shopHubToastTimer);
+  window.__shopHubToastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+};
 
-// Handle page visibility changes for better performance
-document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-        // Page is hidden, potentially pause non-critical operations
-        return;
-    }
-    // Page is visible, resume operations if needed
+document.addEventListener('DOMContentLoaded', () => {
+  window.shopHubApp = new ShopHubApp();
 });
