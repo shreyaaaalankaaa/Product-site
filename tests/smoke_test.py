@@ -6,11 +6,11 @@ import json
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_FILES = [
     "index.html", "css/styles.css", "css/themes.css", "data/products.json",
-    "js/main.js", "js/products.js", "js/cart.js", "js/modal.js", "js/theme.js"
+    "js/main.js", "js/products.js", "js/wishlist.js", "js/cart.js", "js/modal.js", "js/theme.js", "manifest.webmanifest", "service-worker.js"
 ]
 REQUIRED_IDS = {
     "main-content", "featured-products", "products-grid", "search-input",
-    "category-chips", "product-modal", "cart-drawer", "cart-items"
+    "category-chips", "product-modal", "cart-drawer", "cart-items", "wishlist-toggle", "wishlist-count"
 }
 
 class IdParser(HTMLParser):
@@ -40,3 +40,8 @@ for product in products:
     assert 0 <= product["rating"] <= 5
 
 print("ShopHub smoke tests passed.")
+
+manifest = json.loads((ROOT / "manifest.webmanifest").read_text(encoding="utf-8"))
+assert manifest["display"] == "standalone"
+assert manifest["start_url"] == "./"
+

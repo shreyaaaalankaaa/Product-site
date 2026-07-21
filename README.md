@@ -1,33 +1,51 @@
 # ShopHub
 
-A responsive e-commerce product showcase built with **HTML, CSS, and vanilla JavaScript**. ShopHub demonstrates client-side product rendering, search and category filters, sorting, accessible product details, theme persistence, and a shopping cart saved with `localStorage`.
+A polished, responsive storefront built with **HTML, CSS, and vanilla JavaScript**. ShopHub focuses on practical front-end engineering: data-driven UI rendering, accessible interactions, persistent client-side state, URL-synced filtering, and installable PWA support—without a framework.
 
 ## Live demo
 
-After enabling GitHub Pages, add the deployed URL here:
+**https://shreyaaaalankaaa.github.io/Product-site/**
 
-`https://shreyaaaalankaaa.github.io/Product-site/`
+## Highlights
 
-## Features
+- Search across product names, categories, descriptions, and features
+- Category chips and five sorting modes
+- Shareable filter state through URL query parameters
+- Persistent shopping cart with quantity controls
+- Persistent wishlist with a saved-products view
+- Accessible product-detail modal with keyboard focus management
+- Responsive layouts for mobile, tablet, and desktop
+- Light/dark theme based on system preference and saved choice
+- Installable PWA manifest and offline caching for core application files
+- Empty, loading, error, and toast feedback states
+- Indian Rupee currency formatting
 
-- Responsive product grid for desktop, tablet, and mobile
-- Product search with debouncing
-- Category filters and multiple sorting options
-- Featured-product section
-- Accessible product-detail modal with keyboard support
-- Shopping cart with quantity controls and persistent browser storage
-- Light and dark themes with saved user preference
-- Empty, loading, error, and toast states
-- Indian Rupee price formatting
-- GitHub Pages-compatible static deployment
+## Engineering decisions
 
-## Built with
+### Data-driven rendering
+
+Products live in `data/products.json` and are rendered through reusable JavaScript templates. This keeps content separate from presentation and makes the catalogue easy to update.
+
+### Persistent state
+
+The cart, wishlist, and theme are stored with `localStorage`. Search, category, sorting, and saved-only filters are synchronized to the URL so a filtered view can be refreshed or shared.
+
+### Accessibility
+
+The interface includes semantic sections, a skip link, visible focus styles, descriptive controls, keyboard-accessible modals, focus restoration, `aria-live` updates, and reduced-motion support.
+
+### Progressive web app support
+
+`manifest.webmanifest` and `service-worker.js` make the core storefront installable and available after initial caching. Remote product photography still depends on network access and falls back to a local SVG placeholder.
+
+## Tech stack
 
 - HTML5
 - CSS3
-- JavaScript
+- Vanilla JavaScript
 - JSON
 - Local Storage API
+- Service Worker and Web App Manifest
 - Python development server
 
 ## Project structure
@@ -35,6 +53,7 @@ After enabling GitHub Pages, add the deployed URL here:
 ```text
 Product-site/
 ├── assets/
+│   ├── favicon.svg
 │   ├── icons.svg
 │   └── product-placeholder.svg
 ├── css/
@@ -47,70 +66,46 @@ Product-site/
 │   ├── main.js
 │   ├── modal.js
 │   ├── products.js
-│   └── theme.js
+│   ├── theme.js
+│   └── wishlist.js
+├── tests/
+│   └── smoke_test.py
 ├── index.html
-├── README.md
+├── manifest.webmanifest
+├── service-worker.js
 └── server.py
 ```
 
 ## Run locally
 
-Opening `index.html` directly can prevent the browser from loading `products.json`. Run the included local server instead.
+The product catalogue is loaded with `fetch`, so use the included server instead of opening `index.html` directly.
 
 ```bash
 python server.py
 ```
 
-Then open:
-
-```text
-http://localhost:5000
-```
-
-A different port can be used when needed:
-
-```bash
-python server.py --port 8080
-```
+Then visit `http://localhost:5000`.
 
 ## Run the checks
-
-A small dependency-free smoke test verifies the project files, HTML IDs, and product data.
 
 ```bash
 python tests/smoke_test.py
 ```
 
+The dependency-free smoke test verifies required files, unique HTML IDs, catalogue integrity, and PWA metadata.
+
 ## Deploy with GitHub Pages
 
-1. Open the repository on GitHub.
-2. Go to **Settings → Pages**.
-3. Under **Build and deployment**, choose **Deploy from a branch**.
-4. Select the `main` branch and `/root` folder.
-5. Save and wait for the deployment link to appear.
+1. Open **Settings → Pages** in the repository.
+2. Choose **Deploy from a branch**.
+3. Select `main` and `/root`.
+4. Save and wait for the deployment URL.
 
-## Accessibility
+## Scope and limitations
 
-The interface includes semantic page sections, visible focus states, descriptive button labels, a skip link, keyboard-accessible controls, modal focus management, and reduced-motion support.
+ShopHub is intentionally a front-end portfolio project. Checkout does not process payments, products are loaded from static JSON, and there is no authentication or server-side inventory management.
 
-## Current limitations
-
-- Checkout is intentionally a demo and does not process payments.
-- Product data is loaded from a local JSON file rather than a backend database.
-- Product images are loaded from Unsplash and use a local fallback when unavailable.
-- Authentication, inventory management, and order processing are outside the current scope.
-
-## Future improvements
-
-- Replace static JSON with a Flask or Node.js API
-- Store products and orders in MySQL or MongoDB
-- Add authentication and user accounts
-- Add automated accessibility and UI tests
-- Add product reviews and wishlist functionality
-
-## Image credits
-
-Product photography is loaded from [Unsplash](https://unsplash.com/). A local SVG placeholder is displayed when an image is unavailable.
+A production version would add a backend API, database persistence, secure authentication, inventory control, payment integration, and automated browser/accessibility tests.
 
 ## Author
 

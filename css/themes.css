@@ -32,3 +32,7 @@
   background: #f8fafc;
   color: #0f172a;
 }
+[data-theme="dark"] .wishlist-toggle.active,
+[data-theme="dark"] #modal-wishlist.active { background: #3f1520; }
+[data-theme="dark"] .wishlist-button { background: rgba(15,23,42,.9); color: #e2e8f0; border-color: rgba(255,255,255,.15); }
+[data-theme="dark"] .wishlist-button.active { background: #e11d48; color: #fff; }

@@ -267,3 +267,21 @@ button { color: inherit; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* Portfolio-grade interaction details */
+.wishlist-toggle { position: relative; }
+.wishlist-toggle.active { border-color: #e11d48; color: #e11d48; background: #fff1f2; }
+.wishlist-count { position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; display: grid; place-items: center; padding: 0 4px; border-radius: 999px; background: #e11d48; color: #fff; border: 2px solid var(--page); font-size: .65rem; font-weight: 900; }
+.wishlist-button { position: absolute; z-index: 3; top: 12px; right: 12px; width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.72); border-radius: 999px; background: rgba(255,255,255,.9); color: #475569; box-shadow: 0 8px 20px rgba(15,23,42,.12); backdrop-filter: blur(8px); cursor: pointer; transition: transform .18s ease, color .18s ease, background .18s ease; }
+.wishlist-button:hover { transform: translateY(-2px) scale(1.03); }
+.wishlist-button.active { background: #e11d48; color: #fff; border-color: #e11d48; }
+.wishlist-button.active svg { fill: currentColor; }
+.wishlist-button svg { width: 18px; height: 18px; }
+.modal-actions { display: grid; grid-template-columns: minmax(0,.8fr) minmax(0,1.2fr); gap: 10px; }
+#modal-wishlist.active { border-color: #e11d48; color: #e11d48; background: #fff1f2; }
+#modal-wishlist.active svg { fill: currentColor; }
+.load-error { grid-column: 1 / -1; display: grid; gap: 4px; padding: 28px; border: 1px solid #fecaca; border-radius: 16px; background: #fff1f2; color: #9f1239; }
+.product-media img { transition: transform .45s cubic-bezier(.2,.7,.2,1); }
+.product-card:hover .product-media img { transform: scale(1.045); }
+.product-card:has(.wishlist-button:focus-visible) { outline: 3px solid color-mix(in srgb, var(--primary) 38%, transparent); outline-offset: 3px; }
+@media (max-width: 520px) { .modal-actions { grid-template-columns: 1fr; } }

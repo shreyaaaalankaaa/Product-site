@@ -12,6 +12,11 @@ class ProductModal {
       if (event.target === this.overlay) this.close();
     });
     this.overlay?.querySelector('.modal-close')?.addEventListener('click', () => this.close());
+    document.getElementById('modal-wishlist')?.addEventListener('click', () => {
+      if (!this.currentProduct) return;
+      window.wishlistManager.toggle(this.currentProduct.id, this.currentProduct.name);
+      this.updateWishlistButton();
+    });
     document.getElementById('modal-add-to-cart')?.addEventListener('click', () => {
       if (!this.currentProduct) return;
       window.cartManager.add(this.currentProduct.id);
@@ -34,9 +39,19 @@ class ProductModal {
     document.getElementById('modal-price').textContent = window.productRenderer.formatCurrency(product.price);
     document.getElementById('modal-description').textContent = product.description;
     document.getElementById('modal-features').innerHTML = window.productRenderer.featuresMarkup(product.features);
+    this.updateWishlistButton();
     this.overlay.hidden = false;
     document.body.classList.add('no-scroll');
     this.overlay.querySelector('.modal-close')?.focus();
+  }
+
+  updateWishlistButton() {
+    const button = document.getElementById('modal-wishlist');
+    if (!button || !this.currentProduct) return;
+    const saved = window.wishlistManager.has(this.currentProduct.id);
+    button.classList.toggle('active', saved);
+    button.innerHTML = `<svg aria-hidden="true"><use href="assets/icons.svg#heart"></use></svg>${saved ? 'Saved' : 'Save product'}`;
+    button.setAttribute('aria-pressed', String(saved));
   }
 
   close() {
