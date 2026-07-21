@@ -116,5 +116,5 @@ Product photography is loaded from [Unsplash](https://unsplash.com/). A local SV
 
 **Shreya Lanka**
 
-- GitHub: (https://github.com/shreyaaaalankaaa)
-- LinkedIn: www.linkedin.com/in/shreya-lanka-057a0b28a
+- GitHub: [@shreyaaaalankaaa](https://github.com/shreyaaaalankaaa)
+- LinkedIn: Add your LinkedIn URL here
