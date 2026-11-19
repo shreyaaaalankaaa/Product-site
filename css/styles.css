@@ -271,6 +271,7 @@ button { color: inherit; }
 /* Portfolio-grade interaction details */
 .wishlist-toggle { position: relative; }
 .wishlist-toggle.active { border-color: #e11d48; color: #e11d48; background: #fff1f2; }
+.wishlist-count[hidden] { display: none; }
 .wishlist-count { position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; display: grid; place-items: center; padding: 0 4px; border-radius: 999px; background: #e11d48; color: #fff; border: 2px solid var(--page); font-size: .65rem; font-weight: 900; }
 .wishlist-button { position: absolute; z-index: 3; top: 12px; right: 12px; width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.72); border-radius: 999px; background: rgba(255,255,255,.9); color: #475569; box-shadow: 0 8px 20px rgba(15,23,42,.12); backdrop-filter: blur(8px); cursor: pointer; transition: transform .18s ease, color .18s ease, background .18s ease; }
 .wishlist-button:hover { transform: translateY(-2px) scale(1.03); }

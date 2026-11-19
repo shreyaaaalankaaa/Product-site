@@ -39,7 +39,10 @@ class WishlistManager {
   }
 
   renderCount() {
-    if (this.countElement) this.countElement.textContent = String(this.ids.size);
+    if (this.countElement) {
+      this.countElement.textContent = String(this.ids.size);
+      this.countElement.hidden = this.ids.size === 0;
+    }
   }
 }
 

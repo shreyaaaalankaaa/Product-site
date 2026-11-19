@@ -1,4 +1,4 @@
-const CACHE = 'shophub-v3';
+const CACHE = 'shophub-v4';
 const CORE = [
   './', './index.html', './css/styles.css', './css/themes.css',
   './js/theme.js', './js/products.js', './js/wishlist.js', './js/cart.js',
