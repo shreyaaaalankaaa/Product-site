@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Smoke tests (required files, unique IDs, product data)
+        run: python tests/smoke_test.py
+      - name: JavaScript syntax
+        run: for f in js/*.js service-worker.js; do node --check "$f"; done
+      - name: Product data is valid JSON
+        run: python -m json.tool data/products.json > /dev/null

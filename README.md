@@ -92,7 +92,7 @@ Then visit `http://localhost:5000`.
 python tests/smoke_test.py
 ```
 
-The dependency-free smoke test verifies required files, unique HTML IDs, catalogue integrity, and PWA metadata.
+The dependency-free smoke test verifies required files, unique HTML IDs, catalogue integrity, and PWA metadata. GitHub Actions runs it, plus JavaScript syntax and JSON checks, on every push.
 
 ## Deploy with GitHub Pages
 
